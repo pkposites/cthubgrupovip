@@ -1,5 +1,5 @@
 /**
- * cthubcapi
+ * cthubvip
  * Recebe PageView e Lead da LP do Grupo VIP (CT Hub Fitness) e reenvia
  * server-side para a Meta Conversions API, com o mesmo event_id usado no
  * fbq() do navegador (deduplicação automática).

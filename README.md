@@ -34,12 +34,12 @@ navegador e aplica hash SHA-256 no `external_id`.
 ## API de Conversões (Cloudflare Worker)
 
 Pasta `worker/`, pixel `1000596334599100`. A LP já aponta para
-`https://cthubcapi.robson-oc96.workers.dev`; enquanto o worker não existir, o envio
+`https://cthubvip.robson-oc96.workers.dev`; enquanto o worker não existir, o envio
 falha em silêncio e a página segue normal.
 
 1. Cloudflare > Workers e Pages > Create > Import a repository >
    `pkposites/cthubgrupovip`, branch `claude/funny-allen-fjq6z7`,
-   **Root directory** `worker`, nome **cthubcapi** (o nome define a URL).
+   **Root directory** `worker`, nome **cthubvip** (o nome define a URL).
 2. Settings > Variables and Secrets: secret `META_ACCESS_TOKEN`
    (Gerenciador de Eventos > Pixel Hub Fitness > Configurações > API de Conversões >
    Gerar token de acesso). `PIXEL_ID` e `ALLOWED_ORIGIN` já vêm do `wrangler.toml`.

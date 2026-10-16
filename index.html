@@ -8,27 +8,90 @@
 <meta name="theme-color" content="#0b0b0c">
 <meta property="og:title" content="Grupo VIP · Inauguração CT Hub Fitness">
 <meta property="og:description" content="Entre no Grupo VIP e saiba tudo da inauguração em primeira mão.">
-<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
 
 <!--
-  CONFIGURAÇÃO — preencha antes de publicar
+  CONFIGURAÇÃO
   - whatsappGroupUrl: link de convite do grupo VIP (https://chat.whatsapp.com/...)
   - metaPixelId: ID do pixel da Meta (deixe '' para desligar)
-  - Evento disparado no clique do botão: Lead (pixel) + 'lead_grupo_vip' (dataLayer)
+  - capiEndpoint: URL do worker da API de Conversões (pasta worker/). '' = desligado;
+    enquanto o worker não estiver publicado, o envio falha em silêncio.
+  Eventos (pixel + CAPI, mesmo event_id -> deduplicados pela Meta):
+  - PageView ao abrir
+  - Lead no clique do botão (+ 'lead_grupo_vip' no dataLayer)
 -->
 <script>
   window.CONFIG = {
     whatsappGroupUrl: 'https://chat.whatsapp.com/JQVcCEJ4H06GSLWxo5eaGK',
     metaPixelId: '1000596334599100', // Pixel Hub Fitness
+    capiEndpoint: 'https://cthubcapi.robson-oc96.workers.dev',
     leadName: 'Grupo VIP Inauguração'
   };
 </script>
 
-<!-- Meta Pixel -->
+<!-- Meta Pixel + API de Conversões -->
 <script>
   (function () {
-    var id = window.CONFIG.metaPixelId;
-    if (!id) return;
+    var C = window.CONFIG;
+
+    function newId(prefix) {
+      return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+    }
+    function getCookie(name) {
+      var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : '';
+    }
+
+    // ID persistente do visitante (external_id na Meta).
+    var visitorId;
+    try {
+      visitorId = localStorage.getItem('cthub_vid');
+      if (!visitorId) { visitorId = newId('v'); localStorage.setItem('cthub_vid', visitorId); }
+    } catch (e) { visitorId = newId('v'); }
+
+    // fbclid do anúncio (para montar o fbc se o cookie _fbc ainda não existir).
+    var fbclid = new URLSearchParams(location.search).get('fbclid');
+    var clickTs = Date.now();
+    try {
+      if (fbclid) localStorage.setItem('cthub_fbclid', JSON.stringify({ v: fbclid, ts: clickTs }));
+      else {
+        var saved = JSON.parse(localStorage.getItem('cthub_fbclid') || 'null');
+        if (saved) { fbclid = saved.v; clickTs = saved.ts; }
+      }
+    } catch (e) {}
+    function getFbc() {
+      return getCookie('_fbc') || (fbclid ? 'fb.1.' + clickTs + '.' + fbclid : '');
+    }
+
+    function sendCapi(eventName, eventId) {
+      if (!C.capiEndpoint) return;
+      try {
+        fetch(C.capiEndpoint.replace(/\/$/, '') + '/event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event_name: eventName,
+            event_id: eventId,
+            event_source_url: location.href,
+            fbp: getCookie('_fbp'),
+            fbc: getFbc(),
+            external_id: visitorId
+          }),
+          keepalive: true
+        }).catch(function () {});
+      } catch (e) {}
+    }
+
+    // Dispara no pixel e na CAPI com o mesmo event_id.
+    window.trackMeta = function (eventName, params) {
+      var eventId = newId(eventName.toLowerCase());
+      if (typeof fbq === 'function') fbq('track', eventName, params || {}, { eventID: eventId });
+      sendCapi(eventName, eventId);
+      return eventId;
+    };
+
+    if (!C.metaPixelId) return;
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -37,8 +100,12 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', id);
-    fbq('track', 'PageView');
+    fbq('init', C.metaPixelId, { external_id: visitorId });
+
+    // PageView: pixel agora; CAPI logo depois, quando o cookie _fbp já existe.
+    var pvId = newId('pageview');
+    fbq('track', 'PageView', {}, { eventID: pvId });
+    setTimeout(function () { sendCapi('PageView', pvId); }, 1200);
   })();
 </script>
 
@@ -83,8 +150,7 @@
     display: flex; flex-direction: column; align-items: center; text-align: center;
   }
 
-  .logo { width: 112px; height: auto; filter: drop-shadow(0 0 18px rgba(255,106,26,.35)); }
-  .brand { margin-top: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; letter-spacing: .32em; font-size: 13px; color: var(--muted); }
+  .logo { width: 120px; height: auto; filter: drop-shadow(0 0 18px rgba(255,106,26,.35)); }
 
   .tag {
     margin-top: 26px;
@@ -174,8 +240,7 @@
 </div>
 
 <main>
-  <img class="logo" src="assets/logo.svg" alt="CT Hub Fitness" width="112" height="93">
-  <div class="brand">FITNESS</div>
+  <img class="logo" src="assets/logo-240.png" alt="CT Hub Fitness" width="120" height="113">
 
   <div class="tag">EM BREVE NA VILA GUARANI</div>
 
@@ -214,12 +279,8 @@
 
       if (!sent) {
         sent = true;
-        var eventId = 'lead-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+        var eventId = window.trackMeta('Lead', { content_name: window.CONFIG.leadName, value: 1, currency: 'BRL' });
 
-        // Meta Pixel
-        if (typeof fbq === 'function') {
-          fbq('track', 'Lead', { content_name: window.CONFIG.leadName }, { eventID: eventId });
-        }
         // GTM / GA4 (se instalados depois)
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: 'lead_grupo_vip', event_id: eventId });

@@ -1,0 +1,13 @@
+name = "cthubcapi"
+main = "index.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+PIXEL_ID = "1000596334599100"
+# Domínios da LP que podem chamar o worker, separados por vírgula.
+ALLOWED_ORIGIN = "https://cthubfitnessvip.netlify.app,https://claude-funny-allen-fjq6z7--cthubfitnessvip.netlify.app"
+
+# Segredos (não vão no git — configurar no dashboard ou via `wrangler secret put`):
+#   META_ACCESS_TOKEN  -> token de acesso da API de Conversões do pixel
+# Opcional:
+#   TEST_EVENT_CODE    -> código do "Testar eventos" no Gerenciador de Eventos

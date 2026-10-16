@@ -15,12 +15,16 @@
  *   GRAPH_VERSION     -> opcional, versão da Graph API (padrão v24.0)
  */
 
+// Valores padrão: permitem colar este arquivo direto no editor da Cloudflare
+// (sem wrangler.toml). Variáveis de ambiente com o mesmo nome têm prioridade.
+const DEFAULT_PIXEL_ID = '1000596334599100';
+const DEFAULT_ALLOWED_ORIGIN = 'https://cthubfitnessvip.netlify.app,https://claude-funny-allen-fjq6z7--cthubfitnessvip.netlify.app';
 const DEFAULT_GRAPH_VERSION = 'v24.0';
 const ALLOWED_EVENTS = ['PageView', 'Lead'];
 const IDENTIFIER_KEYS = ['fbp', 'fbc', 'external_id'];
 
 function allowedOrigins(env) {
-  return String(env.ALLOWED_ORIGIN || '')
+  return String(env.ALLOWED_ORIGIN || DEFAULT_ALLOWED_ORIGIN)
     .split(',')
     .map((o) => o.trim().replace(/\/$/, ''))
     .filter(Boolean);
@@ -90,7 +94,7 @@ async function sendToMeta(env, eventEntry) {
   const payload = { data: [eventEntry], access_token: env.META_ACCESS_TOKEN };
   if (env.TEST_EVENT_CODE) payload.test_event_code = env.TEST_EVENT_CODE;
 
-  const metaRes = await fetch(`https://graph.facebook.com/${version}/${env.PIXEL_ID}/events`, {
+  const metaRes = await fetch(`https://graph.facebook.com/${version}/${env.PIXEL_ID || DEFAULT_PIXEL_ID}/events`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -110,7 +114,7 @@ async function handleEvent(request, env, headers) {
   if (!ALLOWED_EVENTS.includes(event_name) || typeof event_id !== 'string' || !event_id || event_id.length > 100) {
     return jsonResponse({ error: 'invalid_event_name_or_event_id', allowed: ALLOWED_EVENTS }, 400, headers);
   }
-  if (!env.META_ACCESS_TOKEN || !env.PIXEL_ID) {
+  if (!env.META_ACCESS_TOKEN) {
     return jsonResponse({ error: 'server_not_configured' }, 500, headers);
   }
 

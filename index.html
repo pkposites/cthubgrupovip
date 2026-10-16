@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grupo VIP · CT Hub Fitness</title>
+<meta name="description" content="Entre no Grupo VIP de inauguração da CT Hub Fitness e saiba tudo em primeira mão.">
+<meta name="theme-color" content="#0b0b0c">
+<meta property="og:title" content="Grupo VIP · Inauguração CT Hub Fitness">
+<meta property="og:description" content="Entre no Grupo VIP e saiba tudo da inauguração em primeira mão.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+
+<!--
+  CONFIGURAÇÃO — preencha antes de publicar
+  - whatsappGroupUrl: link de convite do grupo VIP (https://chat.whatsapp.com/...)
+  - metaPixelId: ID do pixel da Meta (deixe '' para desligar)
+  - Evento disparado no clique do botão: Lead (pixel) + 'lead_grupo_vip' (dataLayer)
+-->
+<script>
+  window.CONFIG = {
+    whatsappGroupUrl: 'https://chat.whatsapp.com/SEU-LINK-AQUI',
+    metaPixelId: '',
+    leadName: 'Grupo VIP Inauguração'
+  };
+</script>
+
+<!-- Meta Pixel -->
+<script>
+  (function () {
+    var id = window.CONFIG.metaPixelId;
+    if (!id) return;
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', id);
+    fbq('track', 'PageView');
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0b0b0c;
+    --ink: #f4f1ec;
+    --muted: #a7a29b;
+    --orange: #ff6a1a;
+    --orange-deep: #e4540a;
+    --line: rgba(255, 106, 26, .55);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Barlow', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Teto com as linhas de luz (referência ao espaço) */
+  .ceiling {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(120% 60% at 50% 0%, rgba(255,106,26,.16), transparent 60%),
+      radial-gradient(80% 50% at 50% 110%, rgba(255,106,26,.10), transparent 70%);
+  }
+  .ceiling svg { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 980px; max-width: none; opacity: .45; }
+  .ceiling path { stroke: var(--line); stroke-width: 2; fill: none; filter: drop-shadow(0 0 6px rgba(255,106,26,.8)); }
+
+  main {
+    position: relative; z-index: 1;
+    min-height: 100%;
+    max-width: 520px; margin: 0 auto;
+    padding: 36px 20px calc(32px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+
+  .logo { width: 112px; height: auto; filter: drop-shadow(0 0 18px rgba(255,106,26,.35)); }
+  .brand { margin-top: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; letter-spacing: .32em; font-size: 13px; color: var(--muted); }
+
+  .tag {
+    margin-top: 26px;
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 14px; letter-spacing: .18em;
+    color: var(--orange);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 14px;
+  }
+
+  h1 {
+    margin-top: 18px;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: clamp(38px, 11vw, 60px); line-height: .95;
+    text-transform: uppercase;
+  }
+  h1 span { color: var(--orange); }
+
+  .lead {
+    margin-top: 18px;
+    font-size: 18px; line-height: 1.5; color: #d9d4cd;
+    max-width: 30ch;
+  }
+
+  ul {
+    list-style: none; margin-top: 22px; width: 100%;
+    display: grid; gap: 10px; text-align: left;
+  }
+  li {
+    display: flex; gap: 12px; align-items: center;
+    padding: 12px 16px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.08);
+    border-left: 3px solid var(--orange);
+    border-radius: 6px;
+    font-weight: 500; font-size: 16px;
+  }
+
+  .cta {
+    margin-top: 24px; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 20px 24px;
+    background: var(--orange); color: #140700;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-style: italic;
+    font-size: 22px; letter-spacing: .03em; text-transform: uppercase; text-decoration: none;
+    border-radius: 8px; border: 0; cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255,106,26,.35), inset 0 -3px 0 rgba(0,0,0,.18);
+    transition: transform .15s ease, background .15s ease;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .cta:hover { background: #ff7a30; }
+  .cta:active { transform: scale(.98); }
+  .cta svg { width: 24px; height: 24px; flex: none; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 10px 30px rgba(255,106,26,.35), inset 0 -3px 0 rgba(0,0,0,.18); }
+    50% { box-shadow: 0 10px 44px rgba(255,106,26,.6), inset 0 -3px 0 rgba(0,0,0,.18); }
+  }
+  @media (prefers-reduced-motion: reduce) { .cta { animation: none; } }
+
+  .note { margin-top: 14px; font-size: 14px; color: var(--muted); }
+
+  footer { margin-top: auto; padding-top: 48px; font-size: 12px; color: #6f6a64; }
+</style>
+</head>
+<body>
+
+<div class="ceiling" aria-hidden="true">
+  <svg viewBox="0 0 980 420">
+    <path d="M190 40 L790 40 L900 150 L790 260 L190 260 L80 150 Z"/>
+    <path d="M300 95 L680 95 L740 150 L680 205 L300 205 L240 150 Z"/>
+  </svg>
+</div>
+
+<main>
+  <img class="logo" src="assets/logo.svg" alt="CT Hub Fitness" width="112" height="93">
+  <div class="brand">FITNESS</div>
+
+  <div class="tag">INAUGURAÇÃO EM BREVE</div>
+
+  <h1>Ainda não está pronto.<br><span>Mas você já pode entrar.</span></h1>
+
+  <p class="lead">Entre no Grupo VIP do WhatsApp e fique sabendo de tudo antes de todo mundo.</p>
+
+  <ul>
+    <li>Condições exclusivas de inauguração</li>
+    <li>Data de abertura em primeira mão</li>
+    <li>Bastidores da reta final da obra</li>
+  </ul>
+
+  <a class="cta" id="cta-vip" href="#" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.06c-.24.68-1.42 1.31-1.96 1.36-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.27.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.27.14.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.23.61-.14.25.09 1.58.75 1.85.88.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg>
+    Quero entrar no Grupo VIP
+  </a>
+  <p class="note">Gratuito. Você pode sair quando quiser.</p>
+
+  <footer>© CT Hub Fitness</footer>
+</main>
+
+<script>
+  (function () {
+    var btn = document.getElementById('cta-vip');
+    var url = window.CONFIG.whatsappGroupUrl;
+    btn.href = url;
+
+    var sent = false;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      if (!sent) {
+        sent = true;
+        var eventId = 'lead-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+
+        // Meta Pixel
+        if (typeof fbq === 'function') {
+          fbq('track', 'Lead', { content_name: window.CONFIG.leadName }, { eventID: eventId });
+        }
+        // GTM / GA4 (se instalados depois)
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'lead_grupo_vip', event_id: eventId });
+      }
+
+      // Pequena espera para o evento sair antes de trocar de página
+      setTimeout(function () { window.location.href = url; }, 350);
+    });
+  })();
+</script>
+</body>
+</html>
